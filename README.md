@@ -1,0 +1,3 @@
+# SelfLearningNote
+
+This repo is Mussina Lin's self learning note space, lots of note will be recorded here, hopefully...
