@@ -77,3 +77,34 @@ for more detail:
 https://www.instructables.com/id/Understanding-how-ECDSA-protects-your-data/
 
 or search ECDSA explained
+
+
+## Transaction Signing in Practice
+
+sign a transaction flow:
+1. Create transaction data structure, containing nine fields: nonce, gasPrice, gasLimit, to, value, data, chainID,0,0
+2. Produce an RLP-encoded serialized message of the transaction data structure
+3. Compute the Keccak-256 hash of this serialized message
+4. Compute the ECDSA signature, signing the hash with EOA's private key
+5. Append signature's computed v,r,s value to the transaction
+
+v indicates two things: the chainID and the recovery identifier to help ECDSArecover function check the signature.
+
+
+## EIP-155
+EIP-155 **Simple Replay Attack Protection** specifies a replay-attack-protected transaction encoding, which includes a chain identifier inside the transaction data, prior to signing. Ensure that transaction created for one blockchain(e.g. Ethereum main network) are invalid on another blockchain(e.g. Ethereum Classic)
+
+EIP-155 **adds three field to the main six fields of the transaction data structure, namely chainID, 0, 0**
+
+![](https://i.imgur.com/Wcbjbec.png)
+
+## The Signature Prefix Value(v) and Public Key Recovery
+First, you find the two points 𝑅, 𝑅′ which have the value 𝑟 as the x-coordinate 𝑟.
+
+You also compute 𝑟−1, which is the multiplicative inverse of the value 𝑟 from the signature (modulo the order of the generator of the curve).
+
+Then, you compute 𝑧 which is the lowest 𝑛 bits of the hash of the message (where 𝑛 is the bit size of the curve).
+
+Then, the two public keys are 𝑟−1(𝑠𝑅−𝑧𝐺) and 𝑟−1(𝑠𝑅′−𝑧𝐺)
+
+To make things more efficient, transaction signature includes a prefix value v, which tell us which of the two possible R value value is the temp public key. If v is even, then R is correct value. If v is odd, then it is R'. That way, we only need to calculate one value for R.
