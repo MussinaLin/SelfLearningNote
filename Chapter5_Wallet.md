@@ -72,6 +72,24 @@ m/purpose'/coin_type'/account'/change/address_index
 ![](https://i.imgur.com/r1EpZri.png)
 
 
+### Generate Master Key
+![](https://i.imgur.com/EVi9ncW.png)
+
+### Generate Child Private Key
+Use child key derivation(CKD)
+
+input: parent public key, parent chain code, index
+![](https://i.imgur.com/rWoPnmK.png)
+
+### Generate Child Public Key
+
+![](https://i.imgur.com/N4q39C1.png)
+
+### Hardened CKD
+extended public key 含有 chain code，如果有一個 child private key 洩漏，parent chain code 搭配這個 child private key 就可以產生所有其他的 child private key. Worse parent private key 也會被知道
+
+![](https://i.imgur.com/BxdFcru.png)
+
 
 
 
